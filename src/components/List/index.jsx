@@ -1,13 +1,18 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {deleteTodo} from '../../actions';
 import PropTypes from 'prop-types';
 import Todo from './Todo';
 
-const List = ({todos}) => (
+const List = ({todos, delTodo}) => (
   <ul>
     {console.log(todos)}
     {todos.map(todo => {
-      return <Todo key={todo.id} text={todo.text} />
+      return <Todo 
+        key={todo.id}
+        text={todo.text}
+        onDelete={delTodo}
+      />
     })}
   </ul>
 );
@@ -25,4 +30,13 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(List);
+const mapDispatchToProps = dispatch => {
+  return {
+    delTodo: id => {
+      dispatch(deleteTodo(id))
+    }
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);

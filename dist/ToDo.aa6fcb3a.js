@@ -22580,7 +22580,28 @@ exports.Provider = _Provider2.default;
 exports.createProvider = _Provider.createProvider;
 exports.connectAdvanced = _connectAdvanced2.default;
 exports.connect = _connect2.default;
-},{"./components/Provider":"node_modules/react-redux/es/components/Provider.js","./components/connectAdvanced":"node_modules/react-redux/es/components/connectAdvanced.js","./connect/connect":"node_modules/react-redux/es/connect/connect.js"}],"src/components/List/Todo.jsx":[function(require,module,exports) {
+},{"./components/Provider":"node_modules/react-redux/es/components/Provider.js","./components/connectAdvanced":"node_modules/react-redux/es/components/connectAdvanced.js","./connect/connect":"node_modules/react-redux/es/connect/connect.js"}],"src/actions/index.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var todoId = 0;
+var addTodo = exports.addTodo = function addTodo(text) {
+  return {
+    type: 'ADD_TODO',
+    id: todoId++,
+    text: text
+  };
+};
+
+var deleteTodo = exports.deleteTodo = function deleteTodo(id) {
+  return {
+    type: 'DELETE_TODO',
+    id: id
+  };
+};
+},{}],"src/components/Button/index.jsx":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22595,21 +22616,57 @@ var _propTypes = require('prop-types');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Todo = function Todo(_ref) {
+var Button = function Button(_ref) {
   var text = _ref.text;
   return _react2.default.createElement(
-    'li',
+    'button',
     null,
     text
   );
 };
 
-Todo.propTypes = {
+Button.propTypes = {
   text: _propTypes.string.isRequired
 };
 
+exports.default = Button;
+},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js"}],"src/components/List/Todo.jsx":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _Button = require('../Button');
+
+var _Button2 = _interopRequireDefault(_Button);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Todo = function Todo(_ref) {
+  var text = _ref.text,
+      onDelete = _ref.onDelete;
+  return _react2.default.createElement(
+    'li',
+    null,
+    text,
+    _react2.default.createElement(_Button2.default, { text: 'Delete', onClick: onDelete })
+  );
+};
+
+Todo.propTypes = {
+  text: _propTypes.string.isRequired,
+  onDelete: _propTypes.func.isRequired
+};
+
 exports.default = Todo;
-},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js"}],"src/components/List/index.jsx":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js","../Button":"src/components/Button/index.jsx"}],"src/components/List/index.jsx":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22622,6 +22679,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require('react-redux');
 
+var _actions = require('../../actions');
+
 var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -22633,13 +22692,18 @@ var _Todo2 = _interopRequireDefault(_Todo);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var List = function List(_ref) {
-  var todos = _ref.todos;
+  var todos = _ref.todos,
+      delTodo = _ref.delTodo;
   return _react2.default.createElement(
     'ul',
     null,
     console.log(todos),
     todos.map(function (todo) {
-      return _react2.default.createElement(_Todo2.default, { key: todo.id, text: todo.text });
+      return _react2.default.createElement(_Todo2.default, {
+        key: todo.id,
+        text: todo.text,
+        onDelete: delTodo
+      });
     })
   );
 };
@@ -22657,44 +22721,16 @@ var mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(List);
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","prop-types":"node_modules/prop-types/index.js","./Todo":"src/components/List/Todo.jsx"}],"src/actions/index.js":[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var todoId = 0;
-var addTodo = exports.addTodo = function addTodo(text) {
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    type: 'ADD_TODO',
-    id: todoId++,
-    text: text
+    delTodo: function delTodo(id) {
+      dispatch((0, _actions.deleteTodo)(id));
+    }
   };
 };
-},{}],"src/components/Button/index.jsx":[function(require,module,exports) {
-"use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = require("react");
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Button = function Button(props) {
-  return _react2.default.createElement(
-    "button",
-    { type: "submit" },
-    "Add"
-  );
-};
-
-exports.default = Button;
-},{"react":"node_modules/react/index.js"}],"src/components/AddTodo.jsx":[function(require,module,exports) {
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(List);
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","../../actions":"src/actions/index.js","prop-types":"node_modules/prop-types/index.js","./Todo":"src/components/List/Todo.jsx"}],"src/components/AddTodo.jsx":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22726,13 +22762,14 @@ var AddTodoForm = function AddTodoForm(_ref) {
       'form',
       { onSubmit: function onSubmit(e) {
           e.preventDefault();
+          if (!input.value) return;
           dispatch((0, _actions.addTodo)(input.value));
           input.value = '';
         } },
       _react2.default.createElement('input', { type: 'text', ref: function ref(node) {
           return input = node;
         } }),
-      _react2.default.createElement(_Button2.default, null)
+      _react2.default.createElement(_Button2.default, { text: 'Add' })
     )
   );
 };
@@ -22812,7 +22849,9 @@ var mainReducer = function mainReducer() {
         text: action.text
       }]);
     case 'DELETE_TODO':
-      return state;
+      return state.filter(function (todo) {
+        return todo.id !== todo.id;
+      });
     default:
       return state;
   }

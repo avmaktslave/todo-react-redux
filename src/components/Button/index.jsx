@@ -1,7 +1,13 @@
-import React from 'react'
+import React from 'react';
+import {string} from 'prop-types';
 
-const Button = (props) => (
-  <button type="submit">Add</button>
+
+const Button = ({text}) => (
+  <button>{text}</button>
 );
+
+Button.propTypes = {
+  text: string.isRequired
+}
 
 export default Button;

@@ -9,7 +9,7 @@ const mainReducer = (state = [], action) => {
         }
       ]
     case 'DELETE_TODO':
-      return state
+      return state.filter(todo => todo.id !== todo.id)
     default:
       return state
   }
