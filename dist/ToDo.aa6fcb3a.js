@@ -22617,16 +22617,18 @@ var _propTypes = require('prop-types');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Button = function Button(_ref) {
-  var text = _ref.text;
+  var text = _ref.text,
+      onClick = _ref.onClick;
   return _react2.default.createElement(
     'button',
-    null,
+    { onClick: onClick },
     text
   );
 };
 
 Button.propTypes = {
-  text: _propTypes.string.isRequired
+  text: _propTypes.string.isRequired,
+  onClick: _propTypes.func.isRequired
 };
 
 exports.default = Button;
@@ -22651,12 +22653,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Todo = function Todo(_ref) {
   var text = _ref.text,
-      onDelete = _ref.onDelete;
+      onDelete = _ref.onDelete,
+      id = _ref.id;
   return _react2.default.createElement(
     'li',
     null,
     text,
-    _react2.default.createElement(_Button2.default, { text: 'Delete', onClick: onDelete })
+    _react2.default.createElement(_Button2.default, { text: 'Delete', onClick: function onClick() {
+        return onDelete(id);
+      } })
   );
 };
 
@@ -22702,7 +22707,8 @@ var List = function List(_ref) {
       return _react2.default.createElement(_Todo2.default, {
         key: todo.id,
         text: todo.text,
-        onDelete: delTodo
+        onDelete: delTodo,
+        id: todo.id
       });
     })
   );
@@ -22850,8 +22856,9 @@ var mainReducer = function mainReducer() {
       }]);
     case 'DELETE_TODO':
       return state.filter(function (todo) {
-        return todo.id !== todo.id;
+        return todo.id !== action.id;
       });
+
     default:
       return state;
   }

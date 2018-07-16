@@ -9,9 +9,10 @@ const List = ({todos, delTodo}) => (
     {console.log(todos)}
     {todos.map(todo => {
       return <Todo 
-        key={todo.id}
+      key={todo.id}
         text={todo.text}
         onDelete={delTodo}
+        id={todo.id}
       />
     })}
   </ul>

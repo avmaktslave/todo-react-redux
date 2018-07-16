@@ -7,9 +7,10 @@ const mainReducer = (state = [], action) => {
           id: action.id,
           text: action.text
         }
-      ]
+      ];
     case 'DELETE_TODO':
-      return state.filter(todo => todo.id !== todo.id)
+      return state.filter(todo => todo.id !== action.id)
+
     default:
       return state
   }

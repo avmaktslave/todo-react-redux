@@ -2,10 +2,10 @@ import React from 'react'
 import {string, func} from 'prop-types';
 import Button from '../Button';
 
-const Todo = ({text, onDelete}) => (
+const Todo = ({text, onDelete, id}) => (
     <li>
       {text}
-      <Button text="Delete" onClick={onDelete} />
+      <Button text="Delete" onClick={()=>onDelete(id)} />
     </li>
 );
 
