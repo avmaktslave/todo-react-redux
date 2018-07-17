@@ -1,23 +1,43 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {addTodo} from '../actions';
+import { connect } from 'react-redux';
+import { addTodo } from '../actions';
 import Button from './Button';
 
-const AddTodoForm = ({dispatch}) => {
-  let input;
-  return (
-    <div>
-      <form onSubmit={e => {
-        e.preventDefault();
-        if(!input.value) return;
-        dispatch(addTodo(input.value));
-        input.value = '';
-      }}>
-        <input type="text" ref={node => input = node}/>
+class AddTodoForm extends React.Component {
+  text = React.createRef();
+
+  changeHandler = e => {
+    let text = e.target.value;
+    this.setState({ text });
+  };
+
+  addTodoItem = () => {
+    const { text } = this.state;
+    if (!text) return;
+    this.props.addTodo(text);
+    this.setState({ text: '' });
+  };
+
+  render() {
+    return (
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          this.addTodoItem();
+        }}
+      >
+        <input type="text" onChange={this.changeHandler} />
         <Button text="Add" />
       </form>
-    </div>
-  )
+    );
+  }
 }
 
-export default connect()(AddTodoForm);
+const mapDispathToProps = {
+  addTodo
+};
+
+export default connect(
+  null,
+  mapDispathToProps
+)(AddTodoForm);

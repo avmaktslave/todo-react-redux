@@ -1,11 +1,17 @@
-let todoId = 0;
+import uid from 'uid';
 export const addTodo = text => ({
   type: 'ADD_TODO',
-  id: todoId++,
+  id: uid(),
   text
 });
 
 export const deleteTodo = id => ({
   type: 'DELETE_TODO',
   id
-})
+});
+
+export const editTodo = (id, text) => ({
+  type: 'EDIT_TODO',
+  text,
+  id
+});
