@@ -7,18 +7,18 @@ import Button from '../Button';
 class Todo extends React.Component {
   static propTypes = {
     editTodo: func.isRequired,
+    text: string.isRequired,
+    onDelete: func.isRequired,
+    id: string.isRequired,
   };
 
-  state = {
-    textAr: '',
-    isShowEdit: false,
-  };
-
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     const { text } = this.props;
-    this.setState({
+    this.state = {
       textAr: text,
-    });
+      isShowEdit: false,
+    };
   }
 
   onEdit = () => {
@@ -62,12 +62,6 @@ class Todo extends React.Component {
     );
   }
 }
-
-Todo.propTypes = {
-  text: string.isRequired,
-  onDelete: func.isRequired,
-  id: string.isRequired,
-};
 
 const mapDispatchToProps = {
   editTodo,
