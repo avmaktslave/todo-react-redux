@@ -1,36 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { editTodo } from '../../actions';
 import { string, func } from 'prop-types';
+import { editTodo } from '../../actions';
 import Button from '../Button';
 
 class Todo extends React.Component {
+  static propTypes = {
+    editTodo: func.isRequired,
+  };
+
   state = {
     textAr: '',
-    isShowEdit: false
+    isShowEdit: false,
   };
 
   componentDidMount() {
+    const { text } = this.props;
     this.setState({
-      textAr: this.props.text
+      textAr: text,
     });
   }
+
+  onEdit = () => {
+    this.setState({ isShowEdit: true });
+  };
 
   editHandler = e => {
     console.log(e.target.value);
     this.setState({ textAr: e.target.value });
   };
 
-  onEdit = () => {
-    this.setState({ isShowEdit: true });
-  };
-
   editSave = () => {
-    const { id } = this.props;
+    const { id, editTodo } = this.props;
     const { textAr } = this.state;
-    this.props.editTodo(id, textAr);
+    editTodo(id, textAr);
     this.setState({
-      isShowEdit: false
+      isShowEdit: false,
     });
   };
 
@@ -60,14 +65,15 @@ class Todo extends React.Component {
 
 Todo.propTypes = {
   text: string.isRequired,
-  onDelete: func.isRequired
+  onDelete: func.isRequired,
+  id: string.isRequired,
 };
 
 const mapDispatchToProps = {
-  editTodo
+  editTodo,
 };
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Todo);

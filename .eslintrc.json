@@ -4,7 +4,12 @@
     "browser": true,
     "es6": true
   },
-  "extends": ["eslint:recommended", "prettier", "prettier/react"],
+  "extends": [
+    "airbnb",
+    "prettier",
+    "prettier/react",
+    "eslint-config-prettier"
+  ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -15,12 +20,20 @@
   "settings": {
     "import/parser": "babel-eslint"
   },
-  "plugins": ["react", "jsx-a11y", "import", "prettier"],
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import",
+    "prettier",
+    "eslint-plugin-prettier"
+  ],
   "rules": {
+    "no-shadow": [0, { "builtinGlobals": false, "hoist": "functions", "allow": [] }],
+    "indent": [ "error", 2, { "SwitchCase": 1, "ignoredNodes": [ "JSXElement", "JSXOpeningElement" ] } ],
     "import/no-unresolved": [0, { "caseSensitive": false }],
+    "prettier/prettier": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
-    "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],

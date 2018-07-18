@@ -22655,7 +22655,7 @@ var Button = function Button(_ref) {
       onClick = _ref.onClick;
   return _react2.default.createElement(
     'button',
-    { onClick: onClick },
+    { type: 'button', onClick: onClick },
     text
   );
 };
@@ -22663,6 +22663,10 @@ var Button = function Button(_ref) {
 Button.propTypes = {
   text: _propTypes.string.isRequired,
   onClick: _propTypes.func
+};
+
+Button.defaultProps = {
+  onClick: function onClick() {}
 };
 
 exports.default = Button;
@@ -22681,9 +22685,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require('react-redux');
 
-var _actions = require('../../actions');
-
 var _propTypes = require('prop-types');
+
+var _actions = require('../../actions');
 
 var _Button = require('../Button');
 
@@ -22718,6 +22722,12 @@ var Todo = function (_React$Component) {
         textAr: '',
         isShowEdit: false
       }
+    }), Object.defineProperty(_this, 'onEdit', {
+      enumerable: true,
+      writable: true,
+      value: function value() {
+        _this.setState({ isShowEdit: true });
+      }
     }), Object.defineProperty(_this, 'editHandler', {
       enumerable: true,
       writable: true,
@@ -22725,20 +22735,16 @@ var Todo = function (_React$Component) {
         console.log(e.target.value);
         _this.setState({ textAr: e.target.value });
       }
-    }), Object.defineProperty(_this, 'onEdit', {
-      enumerable: true,
-      writable: true,
-      value: function value() {
-        _this.setState({ isShowEdit: true });
-      }
     }), Object.defineProperty(_this, 'editSave', {
       enumerable: true,
       writable: true,
       value: function value() {
-        var id = _this.props.id;
+        var _this$props = _this.props,
+            id = _this$props.id,
+            editTodo = _this$props.editTodo;
         var textAr = _this.state.textAr;
 
-        _this.props.editTodo(id, textAr);
+        editTodo(id, textAr);
         _this.setState({
           isShowEdit: false
         });
@@ -22749,8 +22755,10 @@ var Todo = function (_React$Component) {
   _createClass(Todo, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var text = this.props.text;
+
       this.setState({
-        textAr: this.props.text
+        textAr: text
       });
     }
   }, {
@@ -22790,9 +22798,19 @@ var Todo = function (_React$Component) {
   return Todo;
 }(_react2.default.Component);
 
+Object.defineProperty(Todo, 'propTypes', {
+  enumerable: true,
+  writable: true,
+  value: {
+    editTodo: _propTypes.func.isRequired
+  }
+});
+
+
 Todo.propTypes = {
   text: _propTypes.string.isRequired,
-  onDelete: _propTypes.func.isRequired
+  onDelete: _propTypes.func.isRequired,
+  id: _propTypes.string.isRequired
 };
 
 var mapDispatchToProps = {
@@ -22800,7 +22818,7 @@ var mapDispatchToProps = {
 };
 
 exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Todo);
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","../../actions":"src/actions/index.js","prop-types":"node_modules/prop-types/index.js","../Button":"src/components/Button/index.jsx"}],"src/components/List/index.jsx":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","prop-types":"node_modules/prop-types/index.js","../../actions":"src/actions/index.js","../Button":"src/components/Button/index.jsx"}],"src/components/List/index.jsx":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22813,11 +22831,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require('react-redux');
 
-var _actions = require('../../actions');
-
 var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _actions = require('../../actions');
 
 var _Todo = require('./Todo');
 
@@ -22858,7 +22876,7 @@ var mapDispatchToProps = {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(List);
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","../../actions":"src/actions/index.js","prop-types":"node_modules/prop-types/index.js","./Todo":"src/components/List/Todo.jsx"}],"src/components/AddTodo.jsx":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","prop-types":"node_modules/prop-types/index.js","../../actions":"src/actions/index.js","./Todo":"src/components/List/Todo.jsx"}],"src/components/AddTodo.jsx":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22872,6 +22890,8 @@ var _react = require('react');
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require('react-redux');
+
+var _propTypes = require('prop-types');
 
 var _actions = require('../actions');
 
@@ -22917,9 +22937,10 @@ var AddTodoForm = function (_React$Component) {
       writable: true,
       value: function value() {
         var text = _this.state.text;
+        var addTodo = _this.props.addTodo;
 
         if (!text) return;
-        _this.props.addTodo(text);
+        addTodo(text);
         _this.setState({ text: '' });
       }
     }), _temp), _possibleConstructorReturn(_this, _ret);
@@ -22939,7 +22960,7 @@ var AddTodoForm = function (_React$Component) {
           }
         },
         _react2.default.createElement('input', { type: 'text', onChange: this.changeHandler }),
-        _react2.default.createElement(_Button2.default, { text: 'Add' })
+        _react2.default.createElement(_Button2.default, { text: 'Add', onClick: this.addTodoItem })
       );
     }
   }]);
@@ -22947,12 +22968,21 @@ var AddTodoForm = function (_React$Component) {
   return AddTodoForm;
 }(_react2.default.Component);
 
+Object.defineProperty(AddTodoForm, 'propTypes', {
+  enumerable: true,
+  writable: true,
+  value: {
+    addTodo: _propTypes.func.isRequired
+  }
+});
+
+
 var mapDispathToProps = {
   addTodo: _actions.addTodo
 };
 
 exports.default = (0, _reactRedux.connect)(null, mapDispathToProps)(AddTodoForm);
-},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","../actions":"src/actions/index.js","./Button":"src/components/Button/index.jsx"}],"src/components/ToDo.jsx":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-redux":"node_modules/react-redux/es/index.js","prop-types":"node_modules/prop-types/index.js","../actions":"src/actions/index.js","./Button":"src/components/Button/index.jsx"}],"src/components/ToDo.jsx":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23080,7 +23110,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '46385' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '42347' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

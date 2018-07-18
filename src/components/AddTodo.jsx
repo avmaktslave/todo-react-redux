@@ -1,20 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { func } from 'prop-types';
 import { addTodo } from '../actions';
 import Button from './Button';
 
 class AddTodoForm extends React.Component {
   text = React.createRef();
 
+  static propTypes = {
+    addTodo: func.isRequired,
+  };
+
   changeHandler = e => {
-    let text = e.target.value;
+    const text = e.target.value;
     this.setState({ text });
   };
 
   addTodoItem = () => {
     const { text } = this.state;
+    const { addTodo } = this.props;
     if (!text) return;
-    this.props.addTodo(text);
+    addTodo(text);
     this.setState({ text: '' });
   };
 
@@ -27,17 +33,17 @@ class AddTodoForm extends React.Component {
         }}
       >
         <input type="text" onChange={this.changeHandler} />
-        <Button text="Add" />
+        <Button text="Add" onClick={this.addTodoItem} />
       </form>
     );
   }
 }
 
 const mapDispathToProps = {
-  addTodo
+  addTodo,
 };
 
 export default connect(
   null,
-  mapDispathToProps
+  mapDispathToProps,
 )(AddTodoForm);

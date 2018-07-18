@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteTodo } from '../../actions';
 import PropTypes, { shape, string } from 'prop-types';
+import { deleteTodo } from '../../actions';
 import Todo from './Todo';
 
 const List = ({ todos, deleteTodo }) =>
@@ -22,18 +22,18 @@ List.propTypes = {
   todos: PropTypes.arrayOf(
     shape({
       id: string.isRequired,
-      text: string.isRequired
-    }).isRequired
-  ).isRequired
+      text: string.isRequired,
+    }).isRequired,
+  ).isRequired,
 };
 
 const mapStateToProps = todos => ({ todos });
 
 const mapDispatchToProps = {
-  deleteTodo
+  deleteTodo,
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(List);
