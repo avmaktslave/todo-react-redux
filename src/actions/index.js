@@ -1,17 +1,19 @@
 import uid from 'uid';
+import { add, remove, edit } from './actionsType';
+
 export const addTodo = text => ({
-  type: 'ADD_TODO',
+  type: add,
   id: uid(),
-  text
+  text,
 });
 
 export const deleteTodo = id => ({
-  type: 'DELETE_TODO',
-  id
+  type: remove,
+  id,
 });
 
 export const editTodo = (id, text) => ({
-  type: 'EDIT_TODO',
+  type: edit,
   text,
-  id
+  id,
 });

@@ -22599,6 +22599,15 @@ function uid(len) {
   return Math.random().toString(35).substr(2, len);
 }
 
+},{}],"src/actions/actionsType.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var add = exports.add = 'ADD_TODO';
+var remove = exports.remove = 'DELETE_TODO';
+var edit = exports.edit = 'EDIT_TODO';
 },{}],"src/actions/index.js":[function(require,module,exports) {
 'use strict';
 
@@ -22611,11 +22620,13 @@ var _uid = require('uid');
 
 var _uid2 = _interopRequireDefault(_uid);
 
+var _actionsType = require('./actionsType');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var addTodo = exports.addTodo = function addTodo(text) {
   return {
-    type: 'ADD_TODO',
+    type: _actionsType.add,
     id: (0, _uid2.default)(),
     text: text
   };
@@ -22623,19 +22634,19 @@ var addTodo = exports.addTodo = function addTodo(text) {
 
 var deleteTodo = exports.deleteTodo = function deleteTodo(id) {
   return {
-    type: 'DELETE_TODO',
+    type: _actionsType.remove,
     id: id
   };
 };
 
 var editTodo = exports.editTodo = function editTodo(id, text) {
   return {
-    type: 'EDIT_TODO',
+    type: _actionsType.edit,
     text: text,
     id: id
   };
 };
-},{"uid":"node_modules/uid/index.js"}],"src/components/Button/index.jsx":[function(require,module,exports) {
+},{"uid":"node_modules/uid/index.js","./actionsType":"src/actions/actionsType.js"}],"src/components/Button/index.jsx":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23022,6 +23033,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _actionsType = require('../actions/actionsType');
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var mainReducer = function mainReducer() {
@@ -23029,16 +23042,16 @@ var mainReducer = function mainReducer() {
   var action = arguments[1];
 
   switch (action.type) {
-    case 'ADD_TODO':
+    case _actionsType.add:
       return [].concat(_toConsumableArray(state), [{
         id: action.id,
         text: action.text
       }]);
-    case 'DELETE_TODO':
+    case _actionsType.remove:
       return state.filter(function (todo) {
         return todo.id !== action.id;
       });
-    case 'EDIT_TODO':
+    case _actionsType.edit:
       return state.map(function (todo) {
         return todo.id !== action.id ? todo : _extends({}, todo, { text: action.text });
       });
@@ -23048,7 +23061,7 @@ var mainReducer = function mainReducer() {
 };
 
 exports.default = mainReducer;
-},{}],"index.js":[function(require,module,exports) {
+},{"../actions/actionsType":"src/actions/actionsType.js"}],"index.js":[function(require,module,exports) {
 'use strict';
 
 var _react = require('react');
@@ -23110,7 +23123,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '42347' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '34203' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

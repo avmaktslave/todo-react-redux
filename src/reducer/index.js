@@ -1,6 +1,8 @@
+import { add, remove, edit } from '../actions/actionsType';
+
 const mainReducer = (state = [], action) => {
   switch (action.type) {
-    case 'ADD_TODO':
+    case add:
       return [
         ...state,
         {
@@ -8,9 +10,9 @@ const mainReducer = (state = [], action) => {
           text: action.text,
         },
       ];
-    case 'DELETE_TODO':
+    case remove:
       return state.filter(todo => todo.id !== action.id);
-    case 'EDIT_TODO':
+    case edit:
       return state.map(
         todo => (todo.id !== action.id ? todo : { ...todo, text: action.text }),
       );

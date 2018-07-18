@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "develop": "./node_modules/.bin/parcel index.html",
-    "build": "./node_modules/.bin/parcel build --out-dir public/ index.html"
+    "build": "./node_modules/.bin/parcel build --out-dir public/ index.html",
+    "test": "jest",
+    "test:watch": "npm test -- --watch"
   },
   "author": "Alexey",
   "license": "ISC",
@@ -35,5 +37,9 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "uid": "0.0.2"
+  },
+  "devDependencies": {
+    "babel-jest": "^23.4.0",
+    "jest": "^23.4.1"
   }
 }
